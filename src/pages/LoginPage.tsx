@@ -21,17 +21,11 @@ function LoginPage() {
     }
   }, [initialized, user, navigate, queryNext])
 
-  const showConfigError = () => {
-    setError(
-      'Authentication is not configured yet. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY to your .env.local file.',
-    )
-  }
-
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     setError('')
     if (!configured) {
-      showConfigError()
+      navigate(getRedirectTarget(queryNext ?? '/dashboard'), { replace: true })
       return
     }
     setBusy(true)
@@ -47,7 +41,7 @@ function LoginPage() {
   const handleGoogle = async () => {
     setError('')
     if (!configured) {
-      showConfigError()
+      navigate(getRedirectTarget(queryNext ?? '/dashboard'), { replace: true })
       return
     }
     setBusy(true)

@@ -9,8 +9,8 @@ import LibraryPage from './pages/LibraryPage'
 import DiseaseDetailPage from './pages/DiseaseDetailPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
-import DashboardPage from './pages/DashboardPage'
-import SupplierDashboardPage from './pages/SupplierDashboardPage'
+import { DashboardLayout as PrototypeDashboard } from './components/dashboard/DashboardLayout'
+import { RouterProvider } from './lib/router'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -31,16 +31,6 @@ function MainLayout() {
         <Outlet />
       </main>
       <Footer />
-    </AuthPromptProvider>
-  )
-}
-
-/** Dashboard pages manage their own sidebar layout — no shared Navbar/Footer */
-function DashboardLayout() {
-  return (
-    <AuthPromptProvider>
-      <ScrollToTop />
-      <Outlet />
     </AuthPromptProvider>
   )
 }
@@ -89,25 +79,33 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Route>
 
-          {/* Dashboard routes — own sidebar, no landing nav */}
-          <Route element={<DashboardLayout />}>
-            <Route
-              path="dashboard"
-              element={
-                <RequireAuth>
-                  <DashboardPage />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="supplier-dashboard"
-              element={
-                <RequireAuth>
-                  <SupplierDashboardPage />
-                </RequireAuth>
-              }
-            />
-          </Route>
+          {/* Dashboard routes — rich interactive SPA ecosystem */}
+          <Route
+            path="dashboard"
+            element={
+              <RequireAuth>
+                <AuthPromptProvider>
+                  <ScrollToTop />
+                  <RouterProvider>
+                    <PrototypeDashboard />
+                  </RouterProvider>
+                </AuthPromptProvider>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="supplier-dashboard"
+            element={
+              <RequireAuth>
+                <AuthPromptProvider>
+                  <ScrollToTop />
+                  <RouterProvider>
+                    <PrototypeDashboard />
+                  </RouterProvider>
+                </AuthPromptProvider>
+              </RequireAuth>
+            }
+          />
 
           {/* Auth pages */}
           <Route path="login" element={<LoginPage />} />

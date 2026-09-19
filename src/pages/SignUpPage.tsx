@@ -30,9 +30,7 @@ function SignUpPage() {
     setError('')
     setNotice('')
     if (!configured) {
-      setError(
-        'Authentication is not configured yet. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY to your .env.local file.',
-      )
+      navigate(getRedirectTarget(queryNext ?? '/dashboard'), { replace: true })
       return
     }
     if (password !== confirmPassword) {
@@ -63,9 +61,7 @@ function SignUpPage() {
     setError('')
     setNotice('')
     if (!configured) {
-      setError(
-        'Authentication is not configured yet. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY to your .env.local file.',
-      )
+      navigate(getRedirectTarget(queryNext ?? '/dashboard'), { replace: true })
       return
     }
     setBusy(true)
